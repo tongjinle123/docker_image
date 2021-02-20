@@ -65,7 +65,7 @@ RUN sh -c "$(curl -fsSL https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/ins
 RUN sed -i '$a\export $(cat /proc/1/environ |tr "\\0" "\\n" | xargs)' .zshrc
 
 
-RUN git clone https://github.com/tianws/config.git
+#RUN git clone https://github.com/tianws/config.git
 # # 配置vim
 # RUN curl "https://raw.githubusercontent.com/tianws/config/master/vim/vimrc" -o .vimrc
 
@@ -83,5 +83,5 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 EXPOSE 22
 ENTRYPOINT ["fixuid"]
-CMD echo ${PASSWD} | sudo -S service ssh start
+CMD echo ${PASSWD} | sudo -S service ssh start && /bin/zsh
 #CMD ["sh", "-c", "/usr/sbin/sshd && tail -f /dev/null"]
