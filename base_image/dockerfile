@@ -83,5 +83,5 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 EXPOSE 22
 ENTRYPOINT ["fixuid"]
-CMD echo ${PASSWD} | sudo -S service ssh start && /bin/zsh
+CMD echo ${PASSWD} | sudo -S service ssh start
 #CMD ["sh", "-c", "/usr/sbin/sshd && tail -f /dev/null"]
