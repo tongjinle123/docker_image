@@ -11,20 +11,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
          git \
          curl \
          ca-certificates \
-         libjpeg-dev \
-         libpng-dev \
          sudo \
          openssh-server \
          bash-completion \
          vim \
-         vim-gnome \
          zsh \
          tmux \
-         ranger \
-         xsel \
-         mediainfo \
-         proxychains4 \
-         feh \
          libsndfile1 \
          gcc \
          make \
@@ -32,10 +24,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
          openssl \
          apt-transport-https && \
          rm -rf /var/lib/apt/lists/* && apt-get clean
-
-# 设置X11转发(把/etc/ssh/sshd_config 中的X11Forwarding置为yes,X11UseLocalhost置为no)
-RUN sed -i "s/^.*X11Forwarding.*$/X11Forwarding yes/" /etc/ssh/sshd_config && \
-    sed -i "s/^.*X11UseLocalhost.*$/X11UseLocalhost no/" /etc/ssh/sshd_config
 
 # 新建用户并用 fixuid 管理 uid
 ENV USERNAME="docker"
@@ -64,19 +52,6 @@ RUN sh -c "$(curl -fsSL https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/ins
 # 配置环境变量，使ssh连接时env也生效
 RUN sed -i '$a\export $(cat /proc/1/environ |tr "\\0" "\\n" | xargs)' .zshrc
 
-
-#RUN git clone https://github.com/tianws/config.git
-# # 配置vim
-# RUN curl "https://raw.githubusercontent.com/tianws/config/master/vim/vimrc" -o .vimrc
-
-# # 配置tmux
-# RUN curl "https://raw.githubusercontent.com/tianws/config/master/tmux/tmux_server.conf" -o .tmux.conf
-
-# # 配置ranger
-# RUN ranger --copy-config=all && \
-#     curl "https://raw.githubusercontent.com/tianws/config/master/ranger/rc.conf" -o .config/ranger/rc.conf && \
-#     curl "https://raw.githubusercontent.com/tianws/config/master/ranger/scope.sh" -o .config/ranger/scope.sh
-
 ENV PATH="/home/${USERNAME}/.local/bin:$PATH"
 RUN wget https://tuna.moe/oh-my-tuna/oh-my-tuna.py && python oh-my-tuna.py
 COPY requirements.txt requirements.txt
@@ -84,4 +59,3 @@ RUN pip install -r requirements.txt
 EXPOSE 22
 ENTRYPOINT ["fixuid"]
 CMD echo ${PASSWD} | sudo -S service ssh start && /bin/zsh
-#CMD ["sh", "-c", "/usr/sbin/sshd && tail -f /dev/null"]
