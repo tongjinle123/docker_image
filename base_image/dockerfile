@@ -1,7 +1,8 @@
 FROM pytorchlightning/pytorch_lightning:base-cuda-py3.8-torch1.7
 LABEL maintainer="tongjinle"
 # 设置apt、conda、pip代理镜像
-RUN wget https://tuna.moe/oh-my-tuna/oh-my-tuna.py && python oh-my-tuna.py
+#RUN wget https://tuna.moe/oh-my-tuna/oh-my-tuna.py && python oh-my-tuna.py
+RUN git clone https://github.com/tuna/oh-my-tuna.git && python oh-my-tuna/oh-my-tuna.py
 # 开启终端色彩
 ENV TERM=xterm-256color
 # apt安装常用软件
@@ -53,7 +54,8 @@ RUN sh -c "$(curl -fsSL https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/ins
 RUN sed -i '$a\export $(cat /proc/1/environ |tr "\\0" "\\n" | xargs)' .zshrc
 
 ENV PATH="/home/${USERNAME}/.local/bin:$PATH"
-RUN wget https://tuna.moe/oh-my-tuna/oh-my-tuna.py && python oh-my-tuna.py
+RUN git clone https://github.com/tuna/oh-my-tuna.git && python oh-my-tuna/oh-my-tuna.py
+#RUN wget https://tuna.moe/oh-my-tuna/oh-my-tuna.py && python oh-my-tuna.py
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 EXPOSE 22

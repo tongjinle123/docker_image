@@ -20,6 +20,5 @@ onnx
 onnxruntime
 seaborn
 pandarallel
-webrtc
 h5py
-
+webrtcvad
